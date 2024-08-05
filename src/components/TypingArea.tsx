@@ -1,3 +1,4 @@
+import { Words } from "@/lib/types";
 import {
 	ArrowFatUp,
 	ArrowFatDown,
@@ -5,13 +6,19 @@ import {
 	ArrowFatRight,
 } from "@phosphor-icons/react/dist/ssr";
 
-export default function TypingArea() {
+type TypingAreaProps = {
+	words: Words;
+};
+
+export default function TypingArea({ words }: TypingAreaProps) {
 	return (
 		<div className="grid h-full w-full max-w-[30rem] grid-cols-3 grid-rows-3">
 			{/* UP ARROW */}
 			<div className="relative col-start-2 row-start-1">
 				<div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center">
-					<p className="pb-1 text-4xl font-semibold text-neutral">apples</p>
+					<p className="pb-1 text-4xl font-semibold text-neutral">
+						{words.up.map(({ value }, index) => value)}
+					</p>
 				</div>
 
 				<div className="absolute inset-0 flex h-full w-full items-center justify-center">
@@ -22,7 +29,9 @@ export default function TypingArea() {
 			{/* DOWN ARROW */}
 			<div className="relative col-start-2 row-start-3">
 				<div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center">
-					<p className="pb-1 text-4xl font-semibold text-neutral">hello</p>
+					<p className="pb-1 text-4xl font-semibold text-neutral">
+						{words.down.map(({ value }, index) => value)}
+					</p>
 				</div>
 
 				<div className="absolute inset-0 flex h-full w-full items-center justify-center">
@@ -33,7 +42,9 @@ export default function TypingArea() {
 			{/* LEFT ARROW */}
 			<div className="relative col-start-1 row-start-2">
 				<div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center">
-					<p className="pb-1 text-4xl font-semibold text-neutral">world</p>
+					<p className="pb-1 text-4xl font-semibold text-neutral">
+						{words.left.map(({ value }, index) => value)}
+					</p>
 				</div>
 
 				<div className="absolute inset-0 flex h-full w-full items-center justify-center">
@@ -44,7 +55,9 @@ export default function TypingArea() {
 			{/* RIGHT ARROW */}
 			<div className="relative col-start-3 row-start-2">
 				<div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center">
-					<p className="pb-1 text-4xl font-semibold text-neutral">aalborg</p>
+					<p className="pb-1 text-4xl font-semibold text-neutral">
+						{words.right.map(({ value }, index) => value)}
+					</p>
 				</div>
 
 				<div className="absolute inset-0 flex h-full w-full items-center justify-center">
