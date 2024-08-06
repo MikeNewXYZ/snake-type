@@ -1,24 +1,39 @@
-import { Words } from "@/lib/types";
+import { useContext } from "react";
+import { DirectionWords } from "@/lib/types";
+import { DirectionWordsContext } from "@/contexts/DirectionWordsContext";
 import {
 	ArrowFatUp,
 	ArrowFatDown,
 	ArrowFatLeft,
 	ArrowFatRight,
 } from "@phosphor-icons/react/dist/ssr";
+import DirectionWord from "./DirectionWord";
 
 type TypingAreaProps = {
-	words: Words;
+	directionWords: DirectionWords;
+	validDirections: string[];
+	typedLength: number;
 };
 
-export default function TypingArea({ words }: TypingAreaProps) {
+export default function TypingArea() {
+	const { directionWords, validDirections, typedLength } = useContext(DirectionWordsContext);
+	if (!directionWords) return null;
+
+	const isUpValid = validDirections.includes("up");
+	const isDownValid = validDirections.includes("down");
+	const isLeftValid = validDirections.includes("left");
+	const isRightValid = validDirections.includes("right");
+
 	return (
 		<div className="grid h-full w-full max-w-[30rem] grid-cols-3 grid-rows-3">
 			{/* UP ARROW */}
 			<div className="relative col-start-2 row-start-1">
 				<div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center">
-					<p className="pb-1 text-4xl font-semibold text-neutral">
-						{words.up.map(({ value }, index) => value)}
-					</p>
+					<DirectionWord
+						directionWord={directionWords["up"]}
+						typedLength={typedLength}
+						isValid={isUpValid}
+					/>
 				</div>
 
 				<div className="absolute inset-0 flex h-full w-full items-center justify-center">
@@ -29,9 +44,11 @@ export default function TypingArea({ words }: TypingAreaProps) {
 			{/* DOWN ARROW */}
 			<div className="relative col-start-2 row-start-3">
 				<div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center">
-					<p className="pb-1 text-4xl font-semibold text-neutral">
-						{words.down.map(({ value }, index) => value)}
-					</p>
+					<DirectionWord
+						directionWord={directionWords["down"]}
+						typedLength={typedLength}
+						isValid={isDownValid}
+					/>
 				</div>
 
 				<div className="absolute inset-0 flex h-full w-full items-center justify-center">
@@ -42,9 +59,11 @@ export default function TypingArea({ words }: TypingAreaProps) {
 			{/* LEFT ARROW */}
 			<div className="relative col-start-1 row-start-2">
 				<div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center">
-					<p className="pb-1 text-4xl font-semibold text-neutral">
-						{words.left.map(({ value }, index) => value)}
-					</p>
+					<DirectionWord
+						directionWord={directionWords["left"]}
+						typedLength={typedLength}
+						isValid={isLeftValid}
+					/>
 				</div>
 
 				<div className="absolute inset-0 flex h-full w-full items-center justify-center">
@@ -55,9 +74,11 @@ export default function TypingArea({ words }: TypingAreaProps) {
 			{/* RIGHT ARROW */}
 			<div className="relative col-start-3 row-start-2">
 				<div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center">
-					<p className="pb-1 text-4xl font-semibold text-neutral">
-						{words.right.map(({ value }, index) => value)}
-					</p>
+					<DirectionWord
+						directionWord={directionWords["right"]}
+						typedLength={typedLength}
+						isValid={isRightValid}
+					/>
 				</div>
 
 				<div className="absolute inset-0 flex h-full w-full items-center justify-center">
