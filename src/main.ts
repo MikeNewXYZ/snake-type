@@ -1,4 +1,4 @@
-import { PERFECT_FRAME_TIME } from "./constants";
+import { COLOR_BACKGROUND, PERFECT_FRAME_TIME } from "./constants";
 
 function init(): void {
 	const canvas = <HTMLCanvasElement>document.getElementById("game-canvas");
@@ -14,12 +14,18 @@ function init(): void {
 		deltaTime = (timestamp - lasTimestamp) / PERFECT_FRAME_TIME;
 		lasTimestamp = timestamp;
 
-		update(context, deltaTime);
+		update(canvas, context, deltaTime);
 	}
 	window.requestAnimationFrame(render);
 }
 init();
 
-function update(context: CanvasRenderingContext2D, deltaTime: number): void {
-	console.log(deltaTime);
+function update(
+	canvas: HTMLCanvasElement,
+	context: CanvasRenderingContext2D,
+	deltaTime: number,
+): void {
+	// Background color
+	context.fillStyle = COLOR_BACKGROUND;
+	context.fillRect(0, 0, canvas.width, canvas.height);
 }
