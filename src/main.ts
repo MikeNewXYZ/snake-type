@@ -1,7 +1,7 @@
 import { PERFECT_FRAME_TIME } from "./constants";
 import directionWords from "./directionWords";
-import palette from "./palette";
 import food from "./food";
+import background from "./background";
 
 window.appGlobal = {
 	typed: "",
@@ -40,9 +40,7 @@ function update(
 ): void {
 	const foodRect = window.appGlobal.foodRect;
 
-	// Background color
-	context.fillStyle = palette.base100;
-	context.fillRect(0, 0, canvas.width, canvas.height);
+	background.render(canvas, context);
 
 	if (!foodRect) throw new Error("foodRect is NULL");
 	food.render(context, foodRect);
