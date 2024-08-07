@@ -5,9 +5,9 @@ import {
 	PLAYER_SPAWN_BOUNDS_OUTER,
 	PLAYER_VELOCITY_INCREMENT,
 } from "./constants";
+import food from "./food";
+import isRectsCollide from "./isRectsCollide";
 import palette from "./palette";
-
-let prevDirection: string | null = null;
 
 function placeRandom(canvas: HTMLCanvasElement) {
 	const spawnBounds = {
@@ -34,17 +34,12 @@ function setVelocity() {
 	let playerVelocity = window.appGlobal.playerVelocity;
 
 	function changeDirection(x: number, y: number) {
-		if (prevDirection === direction) return;
-
 		playerVelocity = {
 			x: x,
 			y: y,
 		};
 
 		window.appGlobal.playerVelocity = playerVelocity;
-		window.appGlobal.playerVelocityMultiplier += PLAYER_VELOCITY_INCREMENT;
-
-		prevDirection = direction;
 	}
 
 	if (direction === "up" && playerVelocity.y !== 1) {
@@ -55,6 +50,20 @@ function setVelocity() {
 		changeDirection(-1, 0);
 	} else if (direction === "right" && playerVelocity.x !== -1) {
 		changeDirection(1, 0);
+	}
+}
+
+function checkCollideWithFood(canvas: HTMLCanvasElement) {
+	const playerRect = window.appGlobal.playerRect;
+	const foodRect = window.appGlobal.foodRect;
+
+	if (!playerRect) throw new Error("playerRect is NULL");
+	if (!foodRect) throw new Error("foodRect is NULL");
+
+	if (isRectsCollide(playerRect, foodRect)) {
+		food.placeRandom(canvas);
+
+		window.appGlobal.playerVelocityMultiplier += PLAYER_VELOCITY_INCREMENT;
 	}
 }
 
@@ -78,6 +87,7 @@ function render(context: CanvasRenderingContext2D, deltaTime: number) {
 
 export default {
 	placeRandom,
+	checkCollideWithFood,
 	setVelocity,
 	render,
 };

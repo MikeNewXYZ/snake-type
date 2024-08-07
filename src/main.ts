@@ -49,6 +49,7 @@ function update(
 
 	player.setVelocity();
 	player.render(context, deltaTime);
+	player.checkCollideWithFood(canvas);
 
 	if (!foodRect) throw new Error("foodRect is NULL");
 	food.render(context, foodRect);
