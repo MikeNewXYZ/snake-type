@@ -8,6 +8,7 @@ type Rect = {
 type AppGlobal = {
 	typed: string;
 	direction: string | null;
+	playerRect: Rect | null;
 	foodRect: Rect | null;
 };
 

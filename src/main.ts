@@ -2,10 +2,12 @@ import { PERFECT_FRAME_TIME } from "./constants";
 import directionWords from "./directionWords";
 import food from "./food";
 import background from "./background";
+import player from "./player";
 
 window.appGlobal = {
 	typed: "",
 	direction: "",
+	playerRect: null,
 	foodRect: null,
 };
 
@@ -15,6 +17,7 @@ function init(): void {
 	canvas.width = window.innerWidth;
 	const context = <CanvasRenderingContext2D>canvas.getContext("2d");
 
+	player.placeRandom(canvas);
 	food.placeRandom(canvas);
 
 	window.addEventListener("keypress", ({ key }) => (window.appGlobal.typed += key));
@@ -38,9 +41,13 @@ function update(
 	context: CanvasRenderingContext2D,
 	deltaTime: number,
 ): void {
+	const playerRect = window.appGlobal.playerRect;
 	const foodRect = window.appGlobal.foodRect;
 
 	background.render(canvas, context);
+
+	if (!playerRect) throw new Error("playerRect is NULL");
+	player.render(context, playerRect);
 
 	if (!foodRect) throw new Error("foodRect is NULL");
 	food.render(context, foodRect);
