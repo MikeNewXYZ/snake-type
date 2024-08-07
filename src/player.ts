@@ -53,7 +53,27 @@ function setVelocity() {
 	}
 }
 
-function checkCollideWithFood(canvas: HTMLCanvasElement) {
+function outOfBounds(canvas: HTMLCanvasElement) {
+	const playerRect = window.appGlobal.playerRect;
+
+	if (!playerRect) throw new Error("playerRect is NULL");
+
+	if (playerRect.x <= 0) {
+		playerRect.x = canvas.width - playerRect.width;
+		window.appGlobal.playerRect = playerRect;
+	} else if (playerRect.y <= 0) {
+		playerRect.y = canvas.height - playerRect.height;
+		window.appGlobal.playerRect = playerRect;
+	} else if (playerRect.x >= canvas.width - playerRect.width) {
+		playerRect.x = 0;
+		window.appGlobal.playerRect = playerRect;
+	} else if (playerRect.y >= canvas.height - playerRect.height) {
+		playerRect.y = 0;
+		window.appGlobal.playerRect = playerRect;
+	}
+}
+
+function collideWithFood(canvas: HTMLCanvasElement) {
 	const playerRect = window.appGlobal.playerRect;
 	const foodRect = window.appGlobal.foodRect;
 
@@ -87,7 +107,8 @@ function render(context: CanvasRenderingContext2D, deltaTime: number) {
 
 export default {
 	placeRandom,
-	checkCollideWithFood,
+	outOfBounds,
+	collideWithFood,
 	setVelocity,
 	render,
 };
