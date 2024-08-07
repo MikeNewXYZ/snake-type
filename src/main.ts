@@ -8,6 +8,8 @@ window.appGlobal = {
 	typed: "",
 	direction: "",
 	playerRect: null,
+	playerVelocity: { x: 0, y: 0 },
+	playerVelocityMultiplier: 1,
 	foodRect: null,
 };
 
@@ -41,13 +43,12 @@ function update(
 	context: CanvasRenderingContext2D,
 	deltaTime: number,
 ): void {
-	const playerRect = window.appGlobal.playerRect;
 	const foodRect = window.appGlobal.foodRect;
 
 	background.render(canvas, context);
 
-	if (!playerRect) throw new Error("playerRect is NULL");
-	player.render(context, playerRect);
+	player.setVelocity();
+	player.render(context, deltaTime);
 
 	if (!foodRect) throw new Error("foodRect is NULL");
 	food.render(context, foodRect);

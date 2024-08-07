@@ -1,3 +1,8 @@
+type XY = {
+	x: number;
+	y: number;
+};
+
 type Rect = {
 	x: number;
 	y: number;
@@ -9,6 +14,8 @@ type AppGlobal = {
 	typed: string;
 	direction: string | null;
 	playerRect: Rect | null;
+	playerVelocity: XY;
+	playerVelocityMultiplier: number;
 	foodRect: Rect | null;
 };
 
