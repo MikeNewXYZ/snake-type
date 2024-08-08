@@ -1,9 +1,12 @@
 import palette from "./palette";
-import calcSquareCanvasSize from "./calcSquareCanvasSize";
 
-const CANVAS_SIZE = calcSquareCanvasSize(window.innerWidth, window.innerHeight);
-const BACKGROUND_COLOR = palette.base100;
 const PERFECT_FRAME_TIME = 1000 / 10;
+
+const CANVAS_SIZE = window.innerWidth >= window.innerHeight ? window.innerHeight : window.innerWidth;
+const TILES_PER_AXIS = 20;
+const TILE_SIZE = CANVAS_SIZE / TILES_PER_AXIS;
+
+let foodRect: Rect = newFoodRect();
 
 function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById("game-canvas");
@@ -27,6 +30,21 @@ init();
 
 function update(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, deltaTime: number) {
 	// RENDER BACKGROUND
-	context.fillStyle = BACKGROUND_COLOR;
+	context.fillStyle = palette.base100;
 	context.fillRect(0, 0, canvas.width, canvas.height);
+
+	context.fillStyle = "yellow";
+	context.fillRect(foodRect.x, foodRect.y, foodRect.width, foodRect.height);
+}
+
+function newFoodRect(): Rect {
+	const x = Math.floor(Math.random() * TILES_PER_AXIS) * TILE_SIZE;
+	const y = Math.floor(Math.random() * TILES_PER_AXIS) * TILE_SIZE;
+
+	return {
+		x: x,
+		y: y,
+		width: TILE_SIZE,
+		height: TILE_SIZE,
+	};
 }
