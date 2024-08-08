@@ -1,15 +1,20 @@
-import { COLOR_BACKGROUND, PERFECT_FRAME_TIME } from "./constants";
+import palette from "./palette";
+import calcSquareCanvasSize from "./calcSquareCanvasSize";
 
-function init(): void {
+const CANVAS_SIZE = calcSquareCanvasSize(window.innerWidth, window.innerHeight);
+const BACKGROUND_COLOR = palette.base100;
+const PERFECT_FRAME_TIME = 1000 / 10;
+
+function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById("game-canvas");
-	canvas.height = window.innerHeight;
-	canvas.width = window.innerWidth;
+	canvas.width = CANVAS_SIZE.width;
+	canvas.height = CANVAS_SIZE.height;
 	const context = <CanvasRenderingContext2D>canvas.getContext("2d");
 
 	let deltaTime: number = 0;
 	let lasTimestamp: number = 0;
 
-	function render(timestamp: number): void {
+	function render(timestamp: number) {
 		window.requestAnimationFrame(render);
 		deltaTime = (timestamp - lasTimestamp) / PERFECT_FRAME_TIME;
 		lasTimestamp = timestamp;
@@ -20,12 +25,8 @@ function init(): void {
 }
 init();
 
-function update(
-	canvas: HTMLCanvasElement,
-	context: CanvasRenderingContext2D,
-	deltaTime: number,
-): void {
-	// Background color
-	context.fillStyle = COLOR_BACKGROUND;
+function update(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, deltaTime: number) {
+	// RENDER BACKGROUND
+	context.fillStyle = BACKGROUND_COLOR;
 	context.fillRect(0, 0, canvas.width, canvas.height);
 }
