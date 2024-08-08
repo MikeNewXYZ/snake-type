@@ -14,8 +14,8 @@ function init() {
 	canvas.height = CANVAS_SIZE;
 	const context = <CanvasRenderingContext2D>canvas.getContext("2d");
 
-	let deltaTime: number = 0;
-	let lasTimestamp: number = 0;
+	let deltaTime = 0;
+	let lasTimestamp = 0;
 
 	function render(timestamp: number) {
 		window.requestAnimationFrame(render);
