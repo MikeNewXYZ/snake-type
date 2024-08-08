@@ -1,6 +1,4 @@
-type Rect = {
+type XY = {
 	x: number;
 	y: number;
-	width: number;
-	height: number;
 };

@@ -1,19 +1,24 @@
 import palette from "./palette";
 
-const PERFECT_FRAME_TIME = 1000 / 10;
+const PERFECT_FRAME_TIME = 1000 / 60;
 
 const CANVAS_SIZE = window.innerWidth >= window.innerHeight ? window.innerHeight : window.innerWidth;
-const TILES_PER_AXIS = 20;
-const TILE_SIZE = CANVAS_SIZE / TILES_PER_AXIS;
 
-let foodRect: Rect = placeRandomRect();
-let playerRect: Rect = placeRandomRect();
+const PLAYER_SIZE = 50;
+const INITIAL_PLAYER_SPEED = 3;
+const PLAYER_SPEED_INCREMENT = 0.5;
+
+let playerBody: XY[] = [{ x: 100, y: 100 }];
+let playerDirection: XY = { x: 0, y: 0 };
+let playerSpeed = INITIAL_PLAYER_SPEED;
 
 function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById("game-canvas");
 	canvas.width = CANVAS_SIZE;
 	canvas.height = CANVAS_SIZE;
 	const context = <CanvasRenderingContext2D>canvas.getContext("2d");
+
+	window.addEventListener("keyup", ({ code }) => playerMovementController(code));
 
 	let deltaTime = 0;
 	let lasTimestamp = 0;
@@ -34,23 +39,36 @@ function update(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, de
 	context.fillStyle = palette.base100;
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
-	// RENDER FOOD
-	context.fillStyle = "yellow";
-	context.fillRect(foodRect.x, foodRect.y, foodRect.width, foodRect.height);
+	playerBody.unshift({
+		x: playerBody[0].x + playerDirection.x * playerSpeed * deltaTime,
+		y: playerBody[0].y + playerDirection.y * playerSpeed * deltaTime,
+	});
 
-	// RENDER PLAYER
-	context.fillStyle = "green";
-	context.fillRect(playerRect.x, playerRect.y, playerRect.width, playerRect.height);
+	playerBody.pop();
+
+	context.fillStyle = "red";
+	for (let i = 0; i < playerBody.length; i++) {
+		const bodyPart = playerBody[i];
+		context.fillRect(bodyPart.x, bodyPart.y, PLAYER_SIZE, PLAYER_SIZE);
+	}
 }
 
-function placeRandomRect(): Rect {
-	const x = Math.floor(Math.random() * TILES_PER_AXIS) * TILE_SIZE;
-	const y = Math.floor(Math.random() * TILES_PER_AXIS) * TILE_SIZE;
+function playerMovementController(code: string) {
+	let { x, y } = playerDirection;
 
-	return {
-		x: x,
-		y: y,
-		width: TILE_SIZE,
-		height: TILE_SIZE,
-	};
+	if (code == "ArrowUp" && y != 1) {
+		x = 0;
+		y = -1;
+	} else if (code == "ArrowDown" && y != -1) {
+		x = 0;
+		y = 1;
+	} else if (code == "ArrowLeft" && x != 1) {
+		x = -1;
+		y = 0;
+	} else if (code == "ArrowRight" && x != -1) {
+		x = 1;
+		y = 0;
+	}
+
+	playerDirection = { x, y };
 }
