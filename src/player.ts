@@ -1,6 +1,7 @@
 import { FOOD_SIZE, PLAYER_GROWTH_TIME, PLAYER_SIZE } from "./constants";
 import food from "./food";
 import isRectsCollide from "./isRectsCollide";
+import palette from "./palette";
 import placeRandom from "./placeRandom";
 
 let playerRectArray: Rect[] = [placeRandom(PLAYER_SIZE)];
@@ -48,7 +49,7 @@ function update(deltaTime: number) {
 }
 
 function render(context: CanvasRenderingContext2D) {
-	context.fillStyle = "red";
+	context.fillStyle = palette.primary;
 
 	for (let i = 0; i < playerRectArray.length; i++) {
 		const playerRect = playerRectArray[i];
