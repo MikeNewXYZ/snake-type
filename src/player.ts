@@ -1,4 +1,10 @@
-import { FOOD_SIZE, PLAYER_GROWTH_TIME, PLAYER_SIZE } from "./constants";
+import {
+	FOOD_SIZE,
+	INITIAL_PLAYER_SPEED_MODIFIER,
+	PLAYER_GROWTH_TIME,
+	PLAYER_SIZE,
+	PLAYER_SPEED_MODIFIER_INCREMENT,
+} from "./constants";
 import food from "./food";
 import isRectsCollide from "./isRectsCollide";
 import palette from "./palette";
@@ -6,6 +12,7 @@ import placeRandom from "./placeRandom";
 
 let playerRectArray: Rect[] = [placeRandom(PLAYER_SIZE)];
 let playerVelocity: XY = { x: 0, y: 0 };
+let playerSpeedModifier: number = INITIAL_PLAYER_SPEED_MODIFIER;
 let playerGrowthTimer: number = 0;
 
 function playerMovementController(code: string) {
@@ -25,7 +32,10 @@ function playerMovementController(code: string) {
 		y = 0;
 	}
 
-	playerVelocity = { x, y };
+	playerVelocity = {
+		x: x * playerSpeedModifier,
+		y: y * playerSpeedModifier,
+	};
 }
 
 function update(deltaTime: number) {
@@ -44,6 +54,7 @@ function update(deltaTime: number) {
 
 	if (isRectsCollide(playerRectHead, foodRect)) {
 		food.setFoodRect(placeRandom(FOOD_SIZE));
+		playerSpeedModifier += PLAYER_SPEED_MODIFIER_INCREMENT;
 		playerGrowthTimer = PLAYER_GROWTH_TIME;
 	}
 }
