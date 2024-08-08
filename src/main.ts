@@ -8,7 +8,7 @@ const PLAYER_SIZE = 50;
 const INITIAL_PLAYER_SPEED = 3;
 const PLAYER_SPEED_INCREMENT = 0.5;
 
-let playerBody: XY[] = [{ x: 100, y: 100 }];
+let playerBody: XY[] = [placeRandom(PLAYER_SIZE)];
 let playerDirection: XY = { x: 0, y: 0 };
 let playerSpeed = INITIAL_PLAYER_SPEED;
 
@@ -71,4 +71,11 @@ function playerMovementController(code: string) {
 	}
 
 	playerDirection = { x, y };
+}
+
+function placeRandom(size: number): XY {
+	const x = Math.floor(Math.random() * (CANVAS_SIZE - size));
+	const y = Math.floor(Math.random() * (CANVAS_SIZE - size));
+
+	return { x, y };
 }
