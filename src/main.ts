@@ -6,7 +6,8 @@ const CANVAS_SIZE = window.innerWidth >= window.innerHeight ? window.innerHeight
 const TILES_PER_AXIS = 20;
 const TILE_SIZE = CANVAS_SIZE / TILES_PER_AXIS;
 
-let foodRect: Rect = newFoodRect();
+let foodRect: Rect = placeRandomRect();
+let playerRect: Rect = placeRandomRect();
 
 function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById("game-canvas");
@@ -33,11 +34,16 @@ function update(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, de
 	context.fillStyle = palette.base100;
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
+	// RENDER FOOD
 	context.fillStyle = "yellow";
 	context.fillRect(foodRect.x, foodRect.y, foodRect.width, foodRect.height);
+
+	// RENDER PLAYER
+	context.fillStyle = "green";
+	context.fillRect(playerRect.x, playerRect.y, playerRect.width, playerRect.height);
 }
 
-function newFoodRect(): Rect {
+function placeRandomRect(): Rect {
 	const x = Math.floor(Math.random() * TILES_PER_AXIS) * TILE_SIZE;
 	const y = Math.floor(Math.random() * TILES_PER_AXIS) * TILE_SIZE;
 
