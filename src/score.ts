@@ -5,9 +5,10 @@ let score = 0;
 const increaseScore = () => score++;
 
 function render(context: CanvasRenderingContext2D) {
-	context.font = `30px ${DEFAULT_FONT}`;
+	context.font = `bold 30px ${DEFAULT_FONT}`;
+	context.textBaseline = "top";
 	context.fillStyle = palette.baseContent;
-	context.fillText(`Score: ${score}`, 10, 35);
+	context.fillText(`Score: ${score}`, 8, 10);
 }
 
 export default {
