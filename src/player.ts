@@ -7,6 +7,7 @@ import {
 	PLAYER_SIZE,
 	PLAYER_SPEED_MODIFIER_INCREMENT,
 } from "./constants";
+import directionWords from "./directionWords";
 import food from "./food";
 import game from "./game";
 import isRectsCollide from "./isRectsCollide";
@@ -19,21 +20,29 @@ let playerVelocity: XY = { x: 0, y: 0 };
 let playerSpeedModifier: number = INITIAL_PLAYER_SPEED_MODIFIER;
 let playerGrowthTimer: number = 0;
 
-function playerMovementController(code: string) {
+function playerMovementController() {
+	const direction = directionWords.getCurrentDirection();
+
+	if (!direction) return;
+
 	let { x, y } = playerVelocity;
 
-	if (code == "ArrowUp" && y != 1) {
+	if (direction === "up" && y != 1) {
 		x = 0;
 		y = -1;
-	} else if (code == "ArrowDown" && y != -1) {
+		directionWords.setDisabledDirection("down");
+	} else if (direction == "down" && y != -1) {
 		x = 0;
 		y = 1;
-	} else if (code == "ArrowLeft" && x != 1) {
+		directionWords.setDisabledDirection("up");
+	} else if (direction === "left" && x != 1) {
 		x = -1;
 		y = 0;
-	} else if (code == "ArrowRight" && x != -1) {
+		directionWords.setDisabledDirection("right");
+	} else if (direction === "right" && x != -1) {
 		x = 1;
 		y = 0;
+		directionWords.setDisabledDirection("left");
 	}
 
 	playerVelocity = {

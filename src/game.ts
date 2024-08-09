@@ -1,5 +1,5 @@
 import { CANVAS_SIZE, PERFECT_FRAME_TIME } from "./constants";
-import player from "./player";
+import directionWords from "./directionWords";
 
 type Update = (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, deltaTime: number) => void;
 
@@ -11,7 +11,7 @@ function init(update: Update) {
 	canvas.height = CANVAS_SIZE;
 	const context = <CanvasRenderingContext2D>canvas.getContext("2d");
 
-	window.addEventListener("keyup", ({ code }) => player.playerMovementController(code));
+	window.addEventListener("keypress", ({ key }) => directionWords.setTyped(key));
 
 	let deltaTime = 0;
 	let lasTimestamp = 0;
