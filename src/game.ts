@@ -3,6 +3,8 @@ import player from "./player";
 
 type GameLoopFunction = (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, deltaTime: number) => void;
 
+let resetCalled = false;
+
 function init(gameLoop: GameLoopFunction) {
 	const canvas = <HTMLCanvasElement>document.getElementById("game-canvas");
 	canvas.width = CANVAS_SIZE;
@@ -25,8 +27,12 @@ function init(gameLoop: GameLoopFunction) {
 }
 
 function reset() {
+	if (resetCalled) return;
+
 	window.alert("GAME OVER!!!");
 	window.location.reload();
+
+	resetCalled = true;
 }
 
 export default {
