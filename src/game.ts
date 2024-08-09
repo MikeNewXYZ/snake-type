@@ -1,11 +1,11 @@
 import { CANVAS_SIZE, PERFECT_FRAME_TIME } from "./constants";
 import player from "./player";
 
-type GameLoopFunction = (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, deltaTime: number) => void;
+type Update = (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, deltaTime: number) => void;
 
 let resetCalled = false;
 
-function init(gameLoop: GameLoopFunction) {
+function init(update: Update) {
 	const canvas = <HTMLCanvasElement>document.getElementById("game-canvas");
 	canvas.width = CANVAS_SIZE;
 	canvas.height = CANVAS_SIZE;
@@ -16,14 +16,14 @@ function init(gameLoop: GameLoopFunction) {
 	let deltaTime = 0;
 	let lasTimestamp = 0;
 
-	function render(timestamp: number) {
-		window.requestAnimationFrame(render);
+	function gameLoop(timestamp: number) {
+		window.requestAnimationFrame(gameLoop);
 		deltaTime = (timestamp - lasTimestamp) / PERFECT_FRAME_TIME;
 		lasTimestamp = timestamp;
 
-		gameLoop(canvas, context, deltaTime);
+		update(canvas, context, deltaTime);
 	}
-	window.requestAnimationFrame(render);
+	window.requestAnimationFrame(gameLoop);
 }
 
 function reset() {
