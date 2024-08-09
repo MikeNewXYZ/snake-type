@@ -2,11 +2,13 @@ import {
 	CANVAS_SIZE,
 	FOOD_SIZE,
 	INITIAL_PLAYER_SPEED_MODIFIER,
+	PLAYER_GROWTH_DANGER_FROM,
 	PLAYER_GROWTH_TIME,
 	PLAYER_SIZE,
 	PLAYER_SPEED_MODIFIER_INCREMENT,
 } from "./constants";
 import food from "./food";
+import game from "./game";
 import isRectsCollide from "./isRectsCollide";
 import palette from "./palette";
 import placeRandom from "./placeRandom";
@@ -57,6 +59,10 @@ function update(deltaTime: number) {
 	if (playerGrowthTimer > 0) playerGrowthTimer--;
 	if (playerGrowthTimer === 0) playerRectArray.pop();
 
+	for (let i = PLAYER_GROWTH_DANGER_FROM; i < playerRectArray.length; i++) {
+		if (isRectsCollide(playerRectArray[0], playerRectArray[i])) game.reset();
+	}
+
 	if (isRectsCollide(playerRectArray[0], foodRect)) {
 		food.setFoodRect(placeRandom(FOOD_SIZE));
 		playerSpeedModifier += PLAYER_SPEED_MODIFIER_INCREMENT;
@@ -65,9 +71,13 @@ function update(deltaTime: number) {
 }
 
 function render(context: CanvasRenderingContext2D) {
-	context.fillStyle = palette.primary;
-
 	for (let i = 0; i < playerRectArray.length; i++) {
+		if (i < PLAYER_GROWTH_DANGER_FROM) {
+			context.fillStyle = palette.primary;
+		} else {
+			context.fillStyle = palette.secondary;
+		}
+
 		const playerRect = playerRectArray[i];
 		context.fillRect(playerRect.x, playerRect.y, playerRect.width, playerRect.height);
 	}

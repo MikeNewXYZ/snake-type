@@ -10,6 +10,7 @@ function init(gameLoop: GameLoopFunction) {
 	const context = <CanvasRenderingContext2D>canvas.getContext("2d");
 
 	window.addEventListener("keyup", ({ code }) => player.playerMovementController(code));
+
 	let deltaTime = 0;
 	let lasTimestamp = 0;
 
@@ -23,6 +24,12 @@ function init(gameLoop: GameLoopFunction) {
 	window.requestAnimationFrame(render);
 }
 
+function reset() {
+	window.alert("GAME OVER!!!");
+	window.location.reload();
+}
+
 export default {
 	init: init,
+	reset: reset,
 };
