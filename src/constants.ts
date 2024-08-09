@@ -5,8 +5,8 @@ export const DEFAULT_FONT = "Space Grotesk";
 export const CANVAS_SIZE = window.innerWidth >= window.innerHeight ? window.innerHeight : window.innerWidth;
 
 export const PLAYER_SIZE = 50;
-export const INITIAL_PLAYER_SPEED_MODIFIER = 1;
-export const PLAYER_SPEED_MODIFIER_INCREMENT = 0.1;
+export const INITIAL_PLAYER_SPEED_MODIFIER = 1.25;
+export const PLAYER_SPEED_MODIFIER_INCREMENT = 0.25;
 export const PLAYER_GROWTH_DANGER_FROM = 100;
 export const PLAYER_GROWTH_TICKS = 50;
 
