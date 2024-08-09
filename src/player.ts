@@ -3,7 +3,7 @@ import {
 	FOOD_SIZE,
 	INITIAL_PLAYER_SPEED_MODIFIER,
 	PLAYER_GROWTH_DANGER_FROM,
-	PLAYER_GROWTH_TIME,
+	PLAYER_GROWTH_TICKS,
 	PLAYER_SIZE,
 	PLAYER_SPEED_MODIFIER_INCREMENT,
 } from "./constants";
@@ -66,7 +66,7 @@ function update(deltaTime: number) {
 	if (isRectsCollide(playerRectArray[0], foodRect)) {
 		food.setFoodRect(placeRandom(FOOD_SIZE));
 		playerSpeedModifier += PLAYER_SPEED_MODIFIER_INCREMENT;
-		playerGrowthTimer = PLAYER_GROWTH_TIME;
+		playerGrowthTimer = PLAYER_GROWTH_TICKS;
 	}
 }
 
