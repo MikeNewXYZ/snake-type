@@ -8,9 +8,7 @@ let disabledDirection: string | null = null;
 let currentDirection: string | null = null;
 let typed: string = "";
 
-const setTyped = (newValue: string) => {
-	typed += newValue.toLowerCase();
-};
+const setTyped = (newValue: string) => (typed += newValue.toLowerCase());
 const setDisabledDirection = (newValue: string) => (disabledDirection = newValue.toLowerCase());
 
 const getCurrentDirection = () => currentDirection;
