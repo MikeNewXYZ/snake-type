@@ -76,9 +76,11 @@ function render(context: CanvasRenderingContext2D) {
 	context.textBaseline = "top";
 	context.fillStyle = palette.baseContent;
 
+	let directionIndex = 0;
+
 	for (let i = 0; i < ALL_DIRECTIONS.length; i++) {
 		const directionKey: keyof DirectionWords = ALL_DIRECTIONS[i];
-		const textSpacingY = DIRECTION_TEXT_INITIAL_Y + DIRECTION_TEXT_SPACING_Y * i;
+		const textSpacingY = DIRECTION_TEXT_INITIAL_Y + DIRECTION_TEXT_SPACING_Y * directionIndex;
 		const directionWord = currentDirectionWords[directionKey];
 		const isValid = validDirections.includes(directionKey);
 		const isDisabledDirection = disabledDirection === directionKey;
@@ -95,15 +97,9 @@ function render(context: CanvasRenderingContext2D) {
 			back: context.measureText(text.back).width,
 		};
 
-		if (isDisabledDirection) {
-			context.globalAlpha = 0.5;
-			context.fillStyle = palette.baseContent;
-			context.fillText(text.direction, 8, textSpacingY);
-			context.fillText("NULL", 8 + textSpacingX.direction, textSpacingY);
-			context.globalAlpha = 1;
+		if (isDisabledDirection) continue;
 
-			continue;
-		}
+		directionIndex++;
 
 		if (isValid) {
 			context.fillStyle = palette.baseContent;
