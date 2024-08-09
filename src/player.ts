@@ -1,4 +1,5 @@
 import {
+	CANVAS_SIZE,
 	FOOD_SIZE,
 	INITIAL_PLAYER_SPEED_MODIFIER,
 	PLAYER_GROWTH_TIME,
@@ -39,20 +40,24 @@ function playerMovementController(code: string) {
 }
 
 function update(deltaTime: number) {
-	const playerRectHead = playerRectArray[0];
 	const foodRect = food.getFoodRect();
 
 	playerRectArray.unshift({
-		x: playerRectHead.x + playerVelocity.x * deltaTime,
-		y: playerRectHead.y + playerVelocity.y * deltaTime,
-		width: playerRectHead.width,
-		height: playerRectHead.height,
+		x: playerRectArray[0].x + playerVelocity.x * deltaTime,
+		y: playerRectArray[0].y + playerVelocity.y * deltaTime,
+		width: playerRectArray[0].width,
+		height: playerRectArray[0].height,
 	});
+
+	if (playerRectArray[0].x < 0) playerRectArray[0].x = CANVAS_SIZE - PLAYER_SIZE;
+	if (playerRectArray[0].x + PLAYER_SIZE > CANVAS_SIZE) playerRectArray[0].x = 0;
+	if (playerRectArray[0].y < 0) playerRectArray[0].y = CANVAS_SIZE - PLAYER_SIZE;
+	if (playerRectArray[0].y + PLAYER_SIZE > CANVAS_SIZE) playerRectArray[0].y = 0;
 
 	if (playerGrowthTimer > 0) playerGrowthTimer--;
 	if (playerGrowthTimer === 0) playerRectArray.pop();
 
-	if (isRectsCollide(playerRectHead, foodRect)) {
+	if (isRectsCollide(playerRectArray[0], foodRect)) {
 		food.setFoodRect(placeRandom(FOOD_SIZE));
 		playerSpeedModifier += PLAYER_SPEED_MODIFIER_INCREMENT;
 		playerGrowthTimer = PLAYER_GROWTH_TIME;
