@@ -8,3 +8,5 @@ export const PLAYER_SPEED_MODIFIER_INCREMENT = 0.1;
 export const PLAYER_GROWTH_DANGER_FROM = 100;
 export const PLAYER_GROWTH_TICKS = 50;
 export const FOOD_SIZE = 30;
+
+export const DEFAULT_FONT = "Arial";
