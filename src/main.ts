@@ -12,6 +12,5 @@ game.init((canvas, context, deltaTime) => {
 	player.update(deltaTime);
 	player.render(context);
 	score.render(context);
-	// directionWords.compareTypedToWords();
 	directionWords.render(context);
 });
