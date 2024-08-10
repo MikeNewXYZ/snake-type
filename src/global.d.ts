@@ -11,8 +11,8 @@ type XY = {
 };
 
 type DirectionWords = {
-	up: string;
-	down: string;
-	left: string;
-	right: string;
+	up: string | null;
+	down: string | null;
+	left: string | null;
+	right: string | null;
 };

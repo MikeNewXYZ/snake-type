@@ -3,22 +3,59 @@ import palette from "./palette";
 import sound from "./sound";
 import WORDS from "./words";
 
-let currentDirectionWords: DirectionWords = newDirectionWords();
 let validDirections: string[] = ALL_DIRECTIONS;
-let disabledDirection: string | null = null;
+let currentDirectionWords: DirectionWords = newDirectionWords();
 let currentDirection: string | null = null;
 let typed: string = "";
 
-const setTyped = (newValue: string) => {
-	typed += newValue.toLowerCase();
-	compareTypedToWords();
-};
-const setDisabledDirection = (newValue: string) => (disabledDirection = newValue.toLowerCase());
-
 const getCurrentDirection = () => currentDirection;
 
-function newDirectionWords(): DirectionWords {
+function handleKeyPress(key: string) {
+	if (key.length > 1) return;
+
+	typed += key.toLowerCase();
+
+	compareTypedToWords();
+}
+
+function compareTypedToWords() {
+	let newValidDirection: string[] = [];
+
+	for (const [newDirection, word] of Object.entries(currentDirectionWords)) {
+		if (!word) continue;
+
+		const compare = word.substring(0, typed.length);
+
+		if (compare !== typed) continue;
+
+		newValidDirection.push(newDirection);
+
+		if (typed === word) {
+			sound.directionChange.play();
+			validDirections = ALL_DIRECTIONS;
+			currentDirection = newDirection;
+			currentDirectionWords = newDirectionWords(currentDirection, newDirection);
+			typed = "";
+
+			return;
+		}
+	}
+
+	if (newValidDirection.length <= 0) {
+		sound.invalidKey.play();
+		validDirections = ALL_DIRECTIONS;
+		typed = "";
+
+		return;
+	}
+
+	sound.keyPress.play();
+	validDirections = newValidDirection;
+}
+
+function newDirectionWords(currentDirection?: string, newDirection?: string): DirectionWords {
 	let wordPicks: string[] = [];
+	let disabledDirections: string[] = [];
 
 	function pick() {
 		const word: string = WORDS[Math.floor(Math.random() * WORDS.length)];
@@ -35,48 +72,18 @@ function newDirectionWords(): DirectionWords {
 	}
 	pick();
 
+	if (newDirection) disabledDirections.push(newDirection);
+	if (currentDirection === "up") disabledDirections.push("down");
+	if (currentDirection === "down") disabledDirections.push("up");
+	if (currentDirection === "left") disabledDirections.push("right");
+	if (currentDirection === "right") disabledDirections.push("left");
+
 	return {
-		up: wordPicks[0],
-		down: wordPicks[1],
-		left: wordPicks[2],
-		right: wordPicks[3],
+		up: disabledDirections?.includes("up") ? null : wordPicks[0],
+		down: disabledDirections?.includes("down") ? null : wordPicks[1],
+		left: disabledDirections?.includes("left") ? null : wordPicks[2],
+		right: disabledDirections?.includes("right") ? null : wordPicks[3],
 	};
-}
-
-function compareTypedToWords() {
-	function reset() {
-		typed = "";
-		validDirections = ALL_DIRECTIONS;
-	}
-
-	const typedLength = typed.length;
-	let newValidDirection: string[] = [];
-
-	for (const [direction, word] of Object.entries(currentDirectionWords)) {
-		const compare = word.substring(0, typedLength);
-
-		if (compare !== typed) continue;
-
-		newValidDirection.push(direction);
-
-		if (typed === word) {
-			reset();
-			currentDirectionWords = newDirectionWords();
-			currentDirection = direction;
-			sound.directionChange.play();
-
-			return;
-		}
-	}
-
-	if (newValidDirection.length <= 0) {
-		sound.invalidKey.play();
-		reset();
-		return;
-	}
-
-	sound.keyPress.play();
-	validDirections = newValidDirection;
 }
 
 function render(context: CanvasRenderingContext2D) {
@@ -88,10 +95,11 @@ function render(context: CanvasRenderingContext2D) {
 
 	for (let i = 0; i < ALL_DIRECTIONS.length; i++) {
 		const directionKey: keyof DirectionWords = ALL_DIRECTIONS[i];
-		const textSpacingY = DIRECTION_TEXT_INITIAL_Y + DIRECTION_TEXT_SPACING_Y * directionIndex;
 		const directionWord = currentDirectionWords[directionKey];
 		const isValid = validDirections.includes(directionKey);
-		const isDisabledDirection = disabledDirection === directionKey;
+		const textSpacingY = DIRECTION_TEXT_INITIAL_Y + DIRECTION_TEXT_SPACING_Y * directionIndex;
+
+		if (!directionWord) continue;
 
 		const text = {
 			direction: `${ALL_DIRECTIONS[i].toUpperCase()}:`,
@@ -104,8 +112,6 @@ function render(context: CanvasRenderingContext2D) {
 			front: context.measureText(text.front).width,
 			back: context.measureText(text.back).width,
 		};
-
-		if (isDisabledDirection) continue;
 
 		directionIndex++;
 
@@ -129,11 +135,7 @@ function render(context: CanvasRenderingContext2D) {
 }
 
 export default {
-	currentDirection: currentDirection,
-	typed: typed,
-	setTyped: setTyped,
-	setDisabledDirection: setDisabledDirection,
+	handleKeyPress: handleKeyPress,
 	getCurrentDirection: getCurrentDirection,
-	compareTypedToWords: compareTypedToWords,
 	render: render,
 };

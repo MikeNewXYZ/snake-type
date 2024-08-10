@@ -12,7 +12,7 @@ function init(update: Update) {
 	canvas.height = CANVAS_SIZE;
 	const context = <CanvasRenderingContext2D>canvas.getContext("2d");
 
-	window.addEventListener("keypress", ({ key }) => directionWords.setTyped(key));
+	window.addEventListener("keypress", ({ key }) => directionWords.handleKeyPress(key));
 
 	let deltaTime = 0;
 	let lasTimestamp = 0;

@@ -31,19 +31,15 @@ function playerMovementController() {
 	if (direction === "up" && y != 1) {
 		x = 0;
 		y = -1;
-		directionWords.setDisabledDirection("down");
 	} else if (direction == "down" && y != -1) {
 		x = 0;
 		y = 1;
-		directionWords.setDisabledDirection("up");
 	} else if (direction === "left" && x != 1) {
 		x = -1;
 		y = 0;
-		directionWords.setDisabledDirection("right");
 	} else if (direction === "right" && x != -1) {
 		x = 1;
 		y = 0;
-		directionWords.setDisabledDirection("left");
 	}
 
 	playerVelocity = {
