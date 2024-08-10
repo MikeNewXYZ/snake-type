@@ -14,6 +14,7 @@ import isRectsCollide from "./isRectsCollide";
 import palette from "./palette";
 import placeRandom from "./placeRandom";
 import score from "./score";
+import sound from "./sound";
 
 let playerRectArray: Rect[] = [placeRandom(PLAYER_SIZE)];
 let playerVelocity: XY = { x: 0, y: 0 };
@@ -78,6 +79,7 @@ function update(deltaTime: number) {
 		playerSpeedModifier += PLAYER_SPEED_MODIFIER_INCREMENT;
 		playerGrowthTimer = PLAYER_GROWTH_TICKS;
 		score.increaseScore();
+		sound.eatFood.play();
 	}
 }
 

@@ -1,5 +1,6 @@
 import { CANVAS_SIZE, PERFECT_FRAME_TIME } from "./constants";
 import directionWords from "./directionWords";
+import sound from "./sound";
 
 type Update = (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, deltaTime: number) => void;
 
@@ -28,6 +29,8 @@ function init(update: Update) {
 
 function reset() {
 	if (resetCalled) return;
+
+	sound.gameOver.play();
 
 	window.alert("GAME OVER!!!");
 	window.location.reload();

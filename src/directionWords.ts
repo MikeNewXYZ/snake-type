@@ -1,5 +1,6 @@
 import { ALL_DIRECTIONS, DEFAULT_FONT, DIRECTION_TEXT_INITIAL_Y, DIRECTION_TEXT_SPACING_Y } from "./constants";
 import palette from "./palette";
+import sound from "./sound";
 import WORDS from "./words";
 
 let currentDirectionWords: DirectionWords = newDirectionWords();
@@ -8,7 +9,10 @@ let disabledDirection: string | null = null;
 let currentDirection: string | null = null;
 let typed: string = "";
 
-const setTyped = (newValue: string) => (typed += newValue.toLowerCase());
+const setTyped = (newValue: string) => {
+	typed += newValue.toLowerCase();
+	compareTypedToWords();
+};
 const setDisabledDirection = (newValue: string) => (disabledDirection = newValue.toLowerCase());
 
 const getCurrentDirection = () => currentDirection;
@@ -59,15 +63,19 @@ function compareTypedToWords() {
 			reset();
 			currentDirectionWords = newDirectionWords();
 			currentDirection = direction;
+			sound.directionChange.play();
+
 			return;
 		}
 	}
 
 	if (newValidDirection.length <= 0) {
+		sound.invalidKey.play();
 		reset();
 		return;
 	}
 
+	sound.keyPress.play();
 	validDirections = newValidDirection;
 }
 
